@@ -1,0 +1,25 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Archetype Created Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <!-- 声明Servlet对象 -->
+        <servlet-name>LoginController</servlet-name>
+        <!-- 指定Servlet对象的完整位置，包含包名和类名 -->
+        <servlet-class>zhongger.controller.LoginController</servlet-class>
+    </servlet>
+
+    <!--  配置访问地址-->
+    <servlet-mapping>
+        <!--    告诉服务器，当前的配置是给哪个servlet程序使用-->
+        <servlet-name>LoginController</servlet-name>
+        <!--      配置访问路径-->
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+</web-app>
