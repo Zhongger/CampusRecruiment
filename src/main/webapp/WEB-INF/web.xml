@@ -22,4 +22,22 @@
         <!--      配置访问路径-->
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>zhongger.controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RecruitInformationController</servlet-name>
+        <servlet-class>zhongger.controller.RecruitInformationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RecruitInformationController</servlet-name>
+        <url-pattern>/recruitInfo</url-pattern>
+    </servlet-mapping>
 </web-app>

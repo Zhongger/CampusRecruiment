@@ -20,14 +20,15 @@ public class RecruitInformationDao {
         int updateLine = 0;
         try {
             connection.setAutoCommit(false);//开启事务
-            String sql = "INSERT INTO recruitInformation (requirement,companyId,salary,deadLine,address,infoId) VALUES (?,?,?,?,?,?)" ;
+            String sql = "INSERT INTO recruitInformation (requirement,companyId,companyName,salary,deadLine,address,version) VALUES (?,?,?,?,?,?,?)" ;
             statement = connection.prepareStatement(sql);
             statement.setString(1,recruitInformation.getRequirement());
-            statement.setString(2,recruitInformation.getCompanyId());
-            statement.setString(3, recruitInformation.getSalary());
-            statement.setDate(4, (Date) recruitInformation.getDeadLine());
-            statement.setString(5, recruitInformation.getAddress());
-            statement.setInt(6, recruitInformation.getInfoId());
+            statement.setInt(2,recruitInformation.getCompanyId());
+            statement.setString(3,recruitInformation.getCompanyName());
+            statement.setString(4, recruitInformation.getSalary());
+            statement.setString(5, recruitInformation.getDeadLine());
+            statement.setString(6, recruitInformation.getAddress());
+            statement.setInt(7,0);//从第0个版本开始
             updateLine = statement.executeUpdate();
             connection.commit();//提交事务
         } catch (Exception e) {
@@ -74,6 +75,19 @@ public class RecruitInformationDao {
         return result;
     }
 
+    public static List<RecruitInformation> selectListBySearch(String condition) throws SQLException {
+        Connection connection = C3P0Pool.getConnection();
+        PreparedStatement statement = null;
+        String sql = "SELECT * FROM recruitInformation where requirement like '%"+condition+"%' or companyName like '%"+condition+"%' or " +
+                "salary like '%"+condition+"%' or deadLine like '%"+condition+"%' or address like '%"+condition+"%'";
+        statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        BeanListHandler<RecruitInformation> beanListHandler =new BeanListHandler<>(RecruitInformation.class);
+        List<RecruitInformation> result = beanListHandler.handle(resultSet);
+        C3P0Pool.close(resultSet,statement,connection);
+        return result;
+    }
+
 
     //改
     public static int update(RecruitInformation  recruitInformation) throws SQLException {
@@ -83,27 +97,17 @@ public class RecruitInformationDao {
         try {
             connection.setAutoCommit(false);//开启事务
             Integer id = recruitInformation.getId();
-            String lock="SELECT version FROM recruitInformation WHERE id=" + id + "+ FOR UPDATE";
-            ResultSet resultSet = statement.executeQuery(lock);
-            int version=0;//版本号，用于乐观锁
-            while (true){
-                if (updateLine==1){
-                    break;
-                }
-                while (resultSet.next()){
-                    version = resultSet.getInt("version");
-                }
-                String sql = "UPDATE recruitInformation SET requirement="+recruitInformation.getRequirement()+
-                        ",companyId="+recruitInformation.getCompanyId()+
-                        ",salary="+recruitInformation.getSalary()+
-                        ",deadLine="+recruitInformation.getDeadLine()+
-                        ",address="+recruitInformation.getAddress()+
-                        " WHERE id="+id +"AND version="+version;
-                updateLine = statement.executeUpdate(sql);//updateLine=0，重试
-            }
-            String updateVersion = "UPDATE recruitInformation SET version="+(version+1);
-            statement.executeUpdate(updateVersion);//更新版本号
-
+            String sql = "UPDATE recruitInformation SET requirement=?,companyId=?,companyName=?,salary=?,deadLine=?,address=? where id=?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,recruitInformation.getRequirement());
+            statement.setInt(2,recruitInformation.getCompanyId());
+            statement.setString(3,recruitInformation.getCompanyName());
+            statement.setString(4,recruitInformation.getSalary());
+            statement.setString(5,recruitInformation.getDeadLine());
+            statement.setString(6,recruitInformation.getAddress());
+            statement.setInt(7,id);
+            System.out.println(sql);
+            updateLine = statement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
             connection.rollback();

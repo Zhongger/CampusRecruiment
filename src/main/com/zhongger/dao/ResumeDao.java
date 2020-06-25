@@ -37,4 +37,5 @@ public class ResumeDao {
         }
         return updateLine;
     }
+
 }

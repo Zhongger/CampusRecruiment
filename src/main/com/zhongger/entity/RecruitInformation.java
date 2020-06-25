@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.sql.Struct;
 import java.util.Date;
 
 /**
@@ -15,11 +16,11 @@ import java.util.Date;
 @ToString
 public class RecruitInformation implements Serializable {
     private Integer id;//id
-    private Integer infoId;//招聘信息id
     private String requirement;//招聘要求
-    private String companyId;//公司id
+    private Integer companyId;//公司id
+    private String companyName;//公司名称
     private String salary;//薪资 3k~4k
-    private Date deadLine;//截止日期
+    private String deadLine;//截止日期
     private String address;//工作地点
 
     public Integer getId() {
@@ -30,13 +31,6 @@ public class RecruitInformation implements Serializable {
         this.id = id;
     }
 
-    public Integer getInfoId() {
-        return infoId;
-    }
-
-    public void setInfoId(Integer infoId) {
-        this.infoId = infoId;
-    }
 
     public String getRequirement() {
         return requirement;
@@ -46,11 +40,11 @@ public class RecruitInformation implements Serializable {
         this.requirement = requirement;
     }
 
-    public String getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
@@ -62,11 +56,11 @@ public class RecruitInformation implements Serializable {
         this.salary = salary;
     }
 
-    public Date getDeadLine() {
+    public String getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Date deadLine) {
+    public void setDeadLine(String deadLine) {
         this.deadLine = deadLine;
     }
 
@@ -76,5 +70,26 @@ public class RecruitInformation implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public RecruitInformation(Integer id, String requirement, Integer companyId, String companyName, String salary, String deadLine, String address) {
+        this.id = id;
+        this.requirement = requirement;
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.salary = salary;
+        this.deadLine = deadLine;
+        this.address = address;
+    }
+
+    public RecruitInformation() {
     }
 }

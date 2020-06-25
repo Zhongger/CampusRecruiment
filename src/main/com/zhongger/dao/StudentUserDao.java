@@ -23,7 +23,7 @@ public class StudentUserDao {
         int updateLine = 0;
         try {
             connection.setAutoCommit(false);//开启事务
-            String sql = "INSERT INTO businessUser (username,password,universityId) VALUES (?,?,?)";
+            String sql = "INSERT INTO studentUser (username,password,universityId) VALUES (?,?,?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, studentUser.getUsername());
             statement.setString(2, studentUser.getPassword());
