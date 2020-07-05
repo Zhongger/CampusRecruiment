@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校园招聘--发布招聘</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	
+	<script src="../static/js/functions.js"></script>
+	<link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body style="background-image:linear-gradient(to bottom right,rgb(0,220,220),#FFFFF0);
+background-repeat:no-repeat;background-attachment: fixed;">
+	<div style="padding-bottom: 20px;">
+		<div id="title" style="height: 130px;">
+			<h2 style="color: #80FFFF;padding-top: 30px;">
+				<a href="../index.html" style="color: #80FFFF;">校园招聘</a>
+				--发布招聘
+			</h2>
+		</div>
+		<div id="mainContent">
+			<div class="item_div">
+				招聘职位：
+				<input id="position" type="text" class="form-control my-input" placeholder="请输入招聘职位">
+			</div>
+			<div class="item_div">
+				薪酬：
+				<input id="money" type="text" class="form-control my-input" placeholder="请输入薪酬">
+			</div>
+			<div class="item_div">
+				截止日期：
+				<input id="endTime" type="date" class="form-control my-input" placeholder="请输入截止日期">
+			</div>
+			<div class="item_div">
+				工作地点：
+				<input id="location" type="text" class="form-control my-input" placeholder="请输入工作地点">
+			</div>
+			<div class="item_div">
+				要求：
+				<textarea id="require" class="form-control" placeholder="请输入要求" cols="30" rows="5"></textarea>
+			</div>
+		</div>
+		<div style="text-align: center;padding-top: 30px;">
+			<button class="submit_btn" onclick="publish()">发布</button>
+		</div>
+	</div>
+</body>
+<style>
+	.submit_btn{
+		border: none; 
+		width: 80px;
+		height: 80px;
+		border-radius: 40px;
+		transition: all 0.3s;
+		background: rgba(255,255,255,0.5);
+	}
+	.submit_btn:hover{
+		background: rgba(0,150,150,0.8);
+		color: rgb(230,230,230);
+	}
+	#mainContent{
+		width: 40%;
+		border-radius: 5px;
+		margin-left:30%;
+		margin-top: 10px;
+		padding:10px;
+		background: rgba(255,255,255,0.6);
+		/*padding-bottom: 500px;*/
+	}
+	.item_div{
+		padding-bottom: 5px;
+	}
+	.my-input{
+		margin-top: 5px;
+	}
+</style>
+<script>
+	var user=null;
+	$(document).ready(function(){
+		user=checkLogin();
+	});
+	function publish(){
+		var applyPosition=$("#position").val();
+		var money=$("#money").val();
+		var endTime=$("#endTime").val();
+		var location=$("#location").val();
+		var require=$("#require").val();
+		console.log(endTime);
+		
+		if(position==""||money==""||endTime==""||location==""||require==""){
+			alert("每一项都不能为空，请检查！");
+			return;
+		}
+		//
+		var url="/user/recruitInfo";
+		var ajaxData={"operate":"add","applyPosition":applyPosition,"salary":money,
+					  "deadLine":endTime,"address":location,"requirement":require};
+		$.ajax({
+			url:url,
+			type:"post",
+			data:ajaxData,
+			dataType:"JSON",
+			success:function(res){
+				console.log(res);
+				if(res.flag=="success"){
+					alert("发布成功！");
+				}
+			},
+			error:function(res){
+				alert("连接服务器失败！");
+			}
+		});
+	}
+</script>
+</html>

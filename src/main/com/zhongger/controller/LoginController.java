@@ -13,6 +13,7 @@ import zhongger.utils.MyMD5Util;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -29,6 +30,7 @@ public class LoginController extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        HttpSession session = req.getSession();
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             jsonObject.put("code", 2000);
             jsonObject.put("flag", "fail");
@@ -38,6 +40,7 @@ public class LoginController extends HttpServlet {
             return;
         }
         password = MyMD5Util.encrypt(password);
+        System.out.println(password);
         BusinessUserVO businessUserVO = new BusinessUserVO();
         businessUserVO.setUsername(username);
         businessUserVO.setPassword(password);
@@ -56,6 +59,7 @@ public class LoginController extends HttpServlet {
                     jsonObject.put("flag", "success");//登录成功
                     jsonObject.put("user", businessUserDTO);
                     jsonObject.put("msg", "login_success");
+                    session.setAttribute("businessUser",businessUserDTO);
                     resp.getWriter().print(jsonObject);
                     return;
                 } else {
@@ -75,6 +79,7 @@ public class LoginController extends HttpServlet {
                     jsonObject.put("flag", "success");//登录成功
                     jsonObject.put("user", studentUser);
                     jsonObject.put("msg", "login_success");
+                    session.setAttribute("studentUser",studentUser);
                     resp.getWriter().print(jsonObject);
                     return;
                 } else {

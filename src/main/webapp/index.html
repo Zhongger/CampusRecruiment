@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校园招聘--首页</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<script src="static/js/index.js"></script>
+	<script src="static/js/functions.js"></script>
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body style="background:rgb(255,255,255);">
+	<div>
+		<div id="title">
+			<h1 style="color: #80FFFF;padding-top: 30px;">校园招聘</h1>
+		</div>
+		<div id="navigation">
+			<a id="publishJob" href="pages/publishJob.html" class="nav-a">发布招聘</a>
+			<a id="myPublishJob" href="pages/myPulishJobs.html" class="nav-a">我的招聘</a>
+			<!-- <a id="recResume" href="pages/receieveResume.html" class="nav-a">收到的简历</a> -->
+			<a id="myFindJob" href="pages/myApplication.html" class="nav-a">我的应聘</a>
+			<a id="login" href="login.html" class="nav-a">登陆</a>
+			<a id="register" href="register.html" class="nav-a">注册</a>
+			<span id="username" style="color: #80FFFF;"></span>
+		</div>
+		<div id="content">
+			<div id="search">
+				<input type="text" id="search-input" class="form-control" placeholder="搜公司/搜职位">
+				<button type="button" class="btn search-btn" onclick="search()">搜索</button>
+			</div>
+			<div id="showMsg">
+				<div style="text-align: center;color:#00BFBF;">最新招聘</div>
+				<hr style="margin-top: 0;margin-bottom: 10px;">
+				<!-- 招聘信息展示 -->
+				<!-- <div id='msg-body' onclick='seeMsg(id,1)'>
+					<div style='font-size: 18px;color: rgb(0,255,255);'>公司名称</div>
+					<div style='font-size: 12px;'>截止时间：2020-05-01</div>
+					<div style='margin-top: 5px;'>招聘职位</div>
+					<div style='margin-top: 5px;'>薪资</div>
+					<div class='text_seeMore'>点击查看详情</div>
+				</div> -->
+			</div>
+		</div>
+		<a href="#"><div id="toTop">顶部</div></a>
+	</div>
+</body>
+</html>

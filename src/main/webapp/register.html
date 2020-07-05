@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登陆--校园招聘</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="static/css/index.css">
+	<script src="static/js/functions.js"></script>
+</head>
+<body style="background-image:linear-gradient(to bottom right,rgb(0,220,220),#FFFFF0);
+background-repeat:no-repeat;background-attachment: fixed;">
+	<div>
+		<div id="title">
+			<h1 style="color: #80FFFF;padding-top: 30px;">
+				注册--<a href="index.html" style="color: #80FFFF;">校园招聘</a>
+			</h1>
+		</div>
+		<div class="container" style="margin-top:20px;width:30%;margin-left:35%;">
+			<ul class="nav nav-pills" style="padding-bottom: 10px;margin-left: 25%;" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" onclick="setType('user')" href="#userRegister" data-toggle="pill">用户注册</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" onclick="setType('com')" href="#comRegister" data-toggle="pill">企业注册</a>
+				</li>
+			</ul>
+			<div class="tab-content" style="background: rgba(255,255,255,0.5);border-radius: 4px;padding-top:10px;padding-bottom:10px;">
+				<!-- 普通用户注册 -->
+				<div id="userRegister" class="container tab-pane active" >
+					<form>
+						<div>
+							用户名：<input id="user_name" class="form-control" type="text" placeholder="请输入用户名">
+						</div>
+						<div style="margin-top: 5px;">
+							密码：<input id="user_password1" class="form-control" type="password" placeholder="请输入密码">
+						</div>
+						<div style="margin-top: 5px;">
+							确认密码：<input id="user_password2" class="form-control" type="password" placeholder="请再次输入密码">
+						</div>
+						<div style="margin-top: 5px;">
+							<canvas id="codecanvas" width="70" height="40" onclick="fleshCode()"></canvas>
+							<input  id="user_code" class="form-control" style="width: 80px;" type="text" placeholder="验证码">
+						</div>
+						<div style="margin-top: 20px;">
+							<button type="button" class="btn btn-success" onclick="register()">注册</button>
+							<button type="reset" class="btn btn-warning">重置</button>
+						</div>
+						<div style="margin-top: 10px;">
+							<a href="login.html" style="text-decoration: none;font-size: 14px;">现在登陆</a>
+						</div>
+						</form>
+				</div>
+				<!-- 企业注册 -->
+				<div id="comRegister" class="container tab-pane fade">
+					<form>
+						<div>
+							企业名：<input id="com_name" class="form-control" type="text" placeholder="请输入企业名">
+						</div>
+						<div style="margin-top: 5px;">
+							企业号：<input id="com_num" class="form-control" type="number" placeholder="请输入企业号">
+						</div>
+						<div style="margin-top: 5px;">
+							密码：<input id="com_password1" class="form-control" type="password" placeholder="请输入密码">
+						</div>
+						<div style="margin-top: 5px;">
+							确认密码：<input id="com_password2" class="form-control" type="password" placeholder="请再次输入密码">
+						</div>
+						<div style="margin-top: 5px;">
+							企业凭证文件(用于审核):
+							<input id="input_file" type="file" style="background:lightgreen;">
+						</div>
+						<div style="margin-top: 5px;">
+							<canvas id="codecanvas2" width="70" height="40" onclick="fleshCode()"></canvas>
+							<input  id="com_code" class="form-control" style="width: 80px;" type="text" placeholder="验证码">
+						</div>
+						<div style="margin-top: 20px;">
+							<button type="button" class="btn btn-success" onclick="register()">注册</button>
+							<button type="reset" class="btn btn-warning">重置</button>
+						</div>
+						<div style="margin-top: 10px;">
+							<a href="login.html" style="text-decoration: none;font-size: 14px;">现在登陆</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<style>
+	#codecanvas{
+		margin-left: 2px;
+		border-radius: 2px;
+		background: rgb(240,240,240);
+	}
+	#codecanvas:hover{
+		cursor: pointer;
+	}
+	#codecanvas2{
+		margin-left: 2px;
+		border-radius: 2px;
+		background: rgb(240,240,240);
+	}
+	#codecanvas2:hover{
+		cursor: pointer;
+	}
+</style>
+<script type="text/javascript">
+	var type="user";//注册类型
+	var verCode=null;//验证码
+
+	$(document).ready(function(){
+		verCode=creatCode(type);
+		
+	});
+	function register()
+	{
+		console.log("点击了注册");
+		//
+		var input_name=null;
+		var input_num=null;
+		var input_password1=null;
+		var input_password2=null;
+		var input_code=null;
+		var input_file=null;
+		if(type=="user")
+		{
+			input_name=$("#user_name").val();
+			input_password1=$("#user_password1").val();
+			input_password2=$("#user_password2").val();
+			input_code=$("#user_code").val();
+		}
+		else if(type=="com")
+		{
+			input_name=$("#com_name").val();
+			input_num=$("#com_num").val();
+			input_password1=$("#com_password1").val();
+			input_password2=$("#com_password2").val();
+			input_file=document.getElementById("input_file").files[0];
+			input_code=$("#com_code").val();
+		}
+		// console.log(input_name+":"+input_password1+"-"+input_password2+";"+input_code);
+		// return;
+		if(input_name==""||input_num==""||input_password1==""||input_password2=="")
+		{
+			alert("每一项都不能为空！");
+			return;
+		}
+		else if(type=="com"&&(input_file==undefined||input_file==null))
+		{
+			alert("企业凭证为空，请检查");
+			return;
+		}
+		else if(input_name.length>15)
+		{
+			alert("用户名太长了，请控制在15个字符以内！");
+			return;
+		}
+		else if(input_password1.length<6)
+		{
+			alert("密码太短了，至少要求6个字符！");
+			return;
+		}
+		else if(input_password1!=input_password2)
+		{
+			alert("两次密码输入不匹配，请检查！");
+			return;
+		}
+		else if(input_code!=verCode){
+			alert("验证码错误");
+			fleshCode();
+			$("#user_code").val("");
+			$("#com_code").val("");
+			return;
+		}
+		
+		//
+		var url="/register";
+		var ajaxData=null;
+		if(type=="user")
+		{
+			ajaxData={"username":input_name,"password":input_password1,"rePassword":input_password2};
+			//
+			$.ajax({
+				url:url,
+				type:"post",
+				data:ajaxData,
+				//contentType:"application/json;charset=UTF-8",
+				dataType:"json",
+				success:function(res)
+				{
+					console.log(res);
+					if(res.flag=="success")
+						alert("注册成功！");
+					else{
+						alert("注册失败，Error:\n"+res.msg);
+					}
+				},
+				error:function(res)
+				{
+					alert("连接服务器失败！");
+					console.log(res);
+				}
+			});
+		}
+		else if(type=="com")
+		{
+			url="/businessRegister";
+			var formData=new FormData();
+			formData.append("companyName",input_name);
+			formData.append("companyId",input_num);
+			formData.append("password",input_password1);
+			formData.append("rePassword",input_password2);
+			formData.append("companyFile",input_file);
+			//ajaxData={"username":input_name,"password":input_password1,"file":input_file};
+			//
+			$.ajax({
+				url:url,
+				type:"post",
+				data:formData,
+				processData:false,
+            	contentType:false,
+				dataType:"json",
+				success:function(res)
+				{
+					console.log(res);
+					if(res.msg=="waiting verify")
+						alert("注册申请已提交，请等待审核通过！");
+					else{
+						alert("注册失败，Error:\n"+res.msg);
+					}
+				},
+				error:function(res)
+				{
+					alert("连接服务器失败！");
+					console.log(res);
+				}
+			});
+		}
+	}
+	//更新验证码
+	function fleshCode(){
+		verCode=creatCode(type);
+		console.log(verCode);
+		
+	}
+	//设置登陆类型
+	function setType(t){
+		type=t;
+		setTimeout(()=>{
+			verCode=fleshCode();
+		},200);
+	}
+</script>
+</html>

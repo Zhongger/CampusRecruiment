@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校园招聘--收到的简历</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	
+	<script src="../static/js/functions.js"></script>
+	<link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body style="background-image:linear-gradient(to bottom right,rgb(0,220,220),#FFFFF0);
+			background-repeat:no-repeat;background-attachment: fixed;">
+	<div style="padding-bottom: 20px;">
+		<div id="title" style="height: 130px;">
+			<h2 style="color: rgb(100,255,255);padding-top: 30px;">
+				<a href="../index.html" style="color: #80FFFF;">校园招聘</a>
+				--收到的简历
+			</h2>
+		</div>
+		<div id="content-div">
+			<div style="color:rgb(50,50,50);text-align: center;font-size: 18px;">
+				收到简历数：<span id="rec_num">0</span>
+			</div>
+			<hr>
+			<div id='show-body'>
+				<div style='font-size: 18px;color:chocolate;'>某某某</div>
+				<div>应聘职位：<span style='color: dodgerblue;'>java后台开发</span></div>
+				<div>手机号码：<span style='color: dodgerblue;'>11111111111</span></div>
+				<div>联系邮箱：<span style='color: dodgerblue;'>11111@111.com</span></div>
+				<div><a href='"+url+"'>点击下载简历</a></div>
+			</div>
+			
+		</div>
+	</div>
+</body>
+<script>
+	$(document).ready(function(){
+	});
+</script>
+<style>
+	#content-div{
+		width:40%;
+		margin-left: 30%;
+		padding: 10px;
+	}
+	#show-body{
+		border-radius: 6px;
+		padding: 10px;
+		background: rgba(255,255,255,0.5);
+	}
+</style>
+</html>

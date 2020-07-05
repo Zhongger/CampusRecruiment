@@ -1,10 +1,13 @@
 package zhongger.dao;
 
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import zhongger.config.C3P0Pool;
 import zhongger.entity.Business;
+import zhongger.entity.BusinessVO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -14,24 +17,45 @@ import java.sql.SQLException;
  */
 public class BusinessDao {
     //增
-    public static int insert (Business business) throws SQLException {
+    public static int insertToVerify(BusinessVO businessVO) throws SQLException {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
-        int updateLine = 0;
-        try {
-            connection.setAutoCommit(false);//开启事务
-            String sql = "INSERT INTO business (companyId,companyName) VALUES (?,?)" ;
-            statement = connection.prepareStatement(sql);
-            statement.setString(1,business.getCompanyId());
-            statement.setString(2,business.getCompanyName());
-            updateLine = statement.executeUpdate();
-            connection.commit();//提交事务
-        } catch (Exception e) {
-            e.printStackTrace();
-            connection.rollback();//回滚
-        } finally {
-            C3P0Pool.close(null, statement, connection);//关闭连接
-        }
-        return updateLine;
+        connection.setAutoCommit(false);
+        String sql = "insert into verify_company (company_name,company_id,password,companyFile,is_verify) values (?,?,?,?,?)";
+        statement = connection.prepareStatement(sql);
+        statement.setString(1,businessVO.getCompanyName());
+        statement.setString(2,businessVO.getCompanyId());
+        statement.setString(3,businessVO.getPassword());
+        statement.setString(4,businessVO.getCompanyFile());
+        statement.setInt(5,0);//为0的时候是指未通过验证
+        int i = statement.executeUpdate(sql);
+        connection.commit();
+        C3P0Pool.close(null,statement,connection);
+        return i;
+    }
+    //修改验证
+    public static int registerFlag(String companyId) throws SQLException {
+        Connection connection = C3P0Pool.getConnection();
+        PreparedStatement statement = null;
+        connection.setAutoCommit(false);
+        String sql = "update verify_company set is_verify=1 where companyId='"+companyId+"'";
+        statement = connection.prepareStatement(sql);
+        int i = statement.executeUpdate(sql);
+        connection.commit();
+        C3P0Pool.close(null,statement,connection);
+        return i;
+    }
+
+    public static BusinessVO login(String companyId,String password) throws SQLException {
+        Connection connection = C3P0Pool.getConnection();
+        PreparedStatement statement = null;
+        connection.setAutoCommit(false);
+        String sql = "select * from verify_company where company_id='"+companyId+"' and password='"+password+"' and is_verify=1";
+        statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery(sql);
+        BeanHandler<BusinessVO> businessVOBeanHandler = new BeanHandler<>(BusinessVO.class);
+        BusinessVO businessVO = businessVOBeanHandler.handle(resultSet);
+        return businessVO;
+
     }
 }

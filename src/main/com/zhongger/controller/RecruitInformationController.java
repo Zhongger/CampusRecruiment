@@ -30,6 +30,7 @@ public class RecruitInformationController extends HttpServlet {
             String salary = req.getParameter("salary");
             String deadLine = req.getParameter("deadLine");
             String address = req.getParameter("address");
+            String applyPosition = req.getParameter("applyPosition");
             RecruitInformation recruitInformation = new RecruitInformation();
             recruitInformation.setRequirement(requirement);
             recruitInformation.setCompanyId(Integer.parseInt(companyId));
@@ -37,6 +38,7 @@ public class RecruitInformationController extends HttpServlet {
             recruitInformation.setSalary(salary);
             recruitInformation.setDeadLine(deadLine);
             recruitInformation.setAddress(address);
+            recruitInformation.setApplyPosition(applyPosition);
             try {
                 int i = RecruitInformationDao.insert(recruitInformation);
                 if (i>0){
@@ -63,7 +65,8 @@ public class RecruitInformationController extends HttpServlet {
             String salary = req.getParameter("salary");
             String deadLine = req.getParameter("deadLine");
             String address = req.getParameter("address");
-            RecruitInformation recruitInformation = new RecruitInformation(Integer.parseInt(id),requirement,Integer.parseInt(companyId),companyName,salary,deadLine,address);
+            String applyPosition = req.getParameter("applyPosition");
+            RecruitInformation recruitInformation = new RecruitInformation(Integer.parseInt(id),requirement,Integer.parseInt(companyId),companyName,salary,deadLine,address,applyPosition);
             System.out.println(recruitInformation);
             try {
                 int update = RecruitInformationDao.update(recruitInformation);
@@ -122,7 +125,27 @@ public class RecruitInformationController extends HttpServlet {
                 return;
             }
 
-        }else{
+        }else if (operate.equals("showDetail")){
+            String id = req.getParameter("id");
+            RecruitInformation recruitInformation = null;
+            try {
+                recruitInformation = RecruitInformationDao.selectByRecruitInfoId(Integer.parseInt(id));
+                jsonObject.put("code",2000);
+                jsonObject.put("flag","success");
+                jsonObject.put("msg","success");
+                jsonObject.put("data",recruitInformation);
+                resp.getWriter().println(jsonObject);
+                return;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                jsonObject.put("code",2000);
+                jsonObject.put("flag","fail");
+                jsonObject.put("msg","fail");
+                jsonObject.put("data",null);
+                resp.getWriter().println(jsonObject);
+                return;
+            }
+        } else{
             String condition = req.getParameter("condition");
             try {
                 List<RecruitInformation> list = RecruitInformationDao.selectListBySearch(condition);
@@ -146,6 +169,6 @@ public class RecruitInformationController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        this.doGet(req, resp);
     }
 }

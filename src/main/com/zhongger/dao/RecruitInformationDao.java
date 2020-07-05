@@ -1,5 +1,6 @@
 package zhongger.dao;
 
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import zhongger.config.C3P0Pool;
 import zhongger.entity.RecruitInformation;
@@ -20,7 +21,7 @@ public class RecruitInformationDao {
         int updateLine = 0;
         try {
             connection.setAutoCommit(false);//开启事务
-            String sql = "INSERT INTO recruitInformation (requirement,companyId,companyName,salary,deadLine,address,version) VALUES (?,?,?,?,?,?,?)" ;
+            String sql = "INSERT INTO recruitInformation (requirement,companyId,companyName,salary,deadLine,address,version,applyPosition) VALUES (?,?,?,?,?,?,?,?)" ;
             statement = connection.prepareStatement(sql);
             statement.setString(1,recruitInformation.getRequirement());
             statement.setInt(2,recruitInformation.getCompanyId());
@@ -29,6 +30,7 @@ public class RecruitInformationDao {
             statement.setString(5, recruitInformation.getDeadLine());
             statement.setString(6, recruitInformation.getAddress());
             statement.setInt(7,0);//从第0个版本开始
+            statement.setString(8,recruitInformation.getApplyPosition());//从第0个版本开始
             updateLine = statement.executeUpdate();
             connection.commit();//提交事务
         } catch (Exception e) {
@@ -75,11 +77,23 @@ public class RecruitInformationDao {
         return result;
     }
 
+    public static RecruitInformation selectByRecruitInfoId(Integer id) throws SQLException {
+        Connection connection = C3P0Pool.getConnection();
+        PreparedStatement statement = null;
+        String sql = "SELECT * FROM recruitInformation WHERE id="+id;
+        statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        BeanHandler<RecruitInformation> beanHandler =new BeanHandler<>(RecruitInformation.class);
+        RecruitInformation result = beanHandler.handle(resultSet);
+        C3P0Pool.close(resultSet,statement,connection);
+        return result;
+    }
+
     public static List<RecruitInformation> selectListBySearch(String condition) throws SQLException {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
         String sql = "SELECT * FROM recruitInformation where requirement like '%"+condition+"%' or companyName like '%"+condition+"%' or " +
-                "salary like '%"+condition+"%' or deadLine like '%"+condition+"%' or address like '%"+condition+"%'";
+                "salary like '%"+condition+"%' or deadLine like '%"+condition+"%' or address like '%"+condition+"%' or  applyPosition like '%"+condition+"%'";
         statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
         BeanListHandler<RecruitInformation> beanListHandler =new BeanListHandler<>(RecruitInformation.class);
@@ -97,7 +111,7 @@ public class RecruitInformationDao {
         try {
             connection.setAutoCommit(false);//开启事务
             Integer id = recruitInformation.getId();
-            String sql = "UPDATE recruitInformation SET requirement=?,companyId=?,companyName=?,salary=?,deadLine=?,address=? where id=?";
+            String sql = "UPDATE recruitInformation SET requirement=?,companyId=?,companyName=?,salary=?,deadLine=?,address=?,applyPosition=? where id=?";
             statement = connection.prepareStatement(sql);
             statement.setString(1,recruitInformation.getRequirement());
             statement.setInt(2,recruitInformation.getCompanyId());
@@ -105,7 +119,8 @@ public class RecruitInformationDao {
             statement.setString(4,recruitInformation.getSalary());
             statement.setString(5,recruitInformation.getDeadLine());
             statement.setString(6,recruitInformation.getAddress());
-            statement.setInt(7,id);
+            statement.setString(7,recruitInformation.getApplyPosition());
+            statement.setInt(8,id);
             System.out.println(sql);
             updateLine = statement.executeUpdate();
         }catch (Exception e){
@@ -116,4 +131,6 @@ public class RecruitInformationDao {
         }
         return updateLine;
     }
+
+
 }

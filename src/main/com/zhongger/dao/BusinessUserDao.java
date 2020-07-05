@@ -4,7 +4,6 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import zhongger.DTO.BusinessUserDTO;
 import zhongger.VO.BusinessUserVO;
 import zhongger.config.C3P0Pool;
-import zhongger.entity.Business;
 import zhongger.entity.BusinessUser;
 
 import java.sql.Connection;

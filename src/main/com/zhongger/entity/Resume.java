@@ -15,7 +15,10 @@ import java.io.Serializable;
 public class Resume implements Serializable {
     private Integer id;
     private String studentUsername;//学生用户名
+    private Integer recruitInfoId;//招聘信息id
     private String studentName;//学生姓名
+    private String applyPosition;//应聘职位
+    private String phoneNum;//手机号码
     private String email;//E-mail
     private String attachmentResume;//附件简历的路径
 
@@ -56,6 +59,43 @@ public class Resume implements Serializable {
     }
 
     public void setAttachmentResume(String attachmentResume) {
+        this.attachmentResume = attachmentResume;
+    }
+
+    public String getApplyPosition() {
+        return applyPosition;
+    }
+
+    public void setApplyPosition(String applyPosition) {
+        this.applyPosition = applyPosition;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public Integer getRecruitInfoId() {
+        return recruitInfoId;
+    }
+
+    public void setRecruitInfoId(Integer recruitInfoId) {
+        this.recruitInfoId = recruitInfoId;
+    }
+
+    public Resume() {
+    }
+
+    public Resume(String studentUsername, Integer recruitInfoId, String studentName, String applyPosition, String phoneNum, String email, String attachmentResume) {
+        this.studentUsername = studentUsername;
+        this.recruitInfoId = recruitInfoId;
+        this.studentName = studentName;
+        this.applyPosition = applyPosition;
+        this.phoneNum = phoneNum;
+        this.email = email;
         this.attachmentResume = attachmentResume;
     }
 }

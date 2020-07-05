@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校园招聘--我的招聘</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	
+	<script src="../static/js/functions.js"></script>
+	<link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body style="background-image:linear-gradient(to bottom right,rgb(0,220,220),#FFFFF0);
+                background-repeat:no-repeat;background-attachment: fixed;">
+	<div style="padding-bottom: 20px;">
+		<div id="title" style="height: 130px;">
+			<h2 style="color: #80FFFF;padding-top: 30px;">
+				<a href="../index.html" style="color: #80FFFF;">校园招聘</a>
+				--我的招聘
+			</h2>
+        </div>
+        <div id="main-content">
+            <div style="color:rgb(50,50,50);text-align: center;font-size: 18px;">
+				发布职位招聘数：<span id="publish_num">0</span>
+            </div>
+            <hr>
+        </div>
+    </div>
+</body>
+<style>
+    #main-content{
+        width: 40%;
+        margin-left: 30%;
+        padding: 10px;
+    }
+    .show-body{
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        transition: 0.3s all;
+        /* padding-bottom: 300px; */
+    }
+    .show-body:hover{
+        cursor: pointer;
+        background:rgba(235,235,235,0.5);
+    }
+</style>
+<script>
+    var user=null;
+    $(document).ready(function(){
+        // var data=[{"companyName":"虎牙","id":123,"salary":"5k/month","deadLine":"2020-07-23","applyPosition":"java后台开发"}];
+        // showPublishJob(data);
+        // return;
+        user=checkLogin();
+        if(user!=null&&user.type=="com"){
+            getMyPublishJobs();
+        }
+        else{
+            alert("你没有权限！");
+            window.history.back(1);
+        }
+
+    });
+    function getMyPublishJobs(){
+        var url="/user/recruitInfo";
+        var ajaxData={"operate":"condition","condition":user.username};
+        //
+        $.ajax({
+            url:url,
+            type:"post",
+            data:ajaxData,
+            dataType:"JSON",
+            success:function(res){
+                if(res.flag=="success"){
+                    showPublishJob(res.data);
+                }
+            },
+            error:function(res){
+                console.log(res);
+                
+            }
+        });
+    }
+    function showPublishJob(data){
+        var len=data.length;
+        $("#publish_num").html(len);
+        for(var i=0;i<len;i++){
+            var temp=data[i];
+            var str="<div class='show-body' onclick='seeMsg("+temp.id+",2)' title='点击查看'>"
+                    +"<div style='font-size: 20px;color: chocolate;'>"+temp.companyName+"</div>"
+                    +"<div style='font-size: 12px;'>截止时间："+temp.deadLine+"</div>"
+                    +"<div style='margin-top: 5px;'>招聘职位："+temp.applyPosition+"</div>"
+                    +"</div>";
+            $("#main-content").append(str);
+        }
+    }
+</script>
+</html>

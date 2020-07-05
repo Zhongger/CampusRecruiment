@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import sun.security.provider.MD5;
 import zhongger.VO.BusinessUserVO;
 import zhongger.VO.StudentUserVO;
+import zhongger.dao.AdminDao;
 import zhongger.dao.BusinessUserDao;
 import zhongger.dao.StudentUserDao;
 import zhongger.entity.BusinessUser;
@@ -36,7 +37,7 @@ public class RegisterController extends HttpServlet {
             resp.getWriter().print(jsonObject);
         }
         if ("student".equals(status)){
-            String universityId = req.getParameter("universityId");
+            String universityId = req.getParameter("universityName");
             StudentUserVO studentUser = new StudentUserVO();
             studentUser.setUsername(username);
 
@@ -83,11 +84,20 @@ public class RegisterController extends HttpServlet {
                     businessUser.setCompanyId(companyId);
                     businessUser.setCompanyId(companyId);
                     businessUser.setCompanyName(companyName);
-                    BusinessUserDao.insert(businessUser);
-                    jsonObject.put("code",2000);
-                    jsonObject.put("flag","success");//注册成功
-                    jsonObject.put("msg","register_success");
-                    jsonObject.put("user",businessUser);
+                    int flag = AdminDao.passOrNot(Integer.parseInt(companyId));
+                    if (flag==1){
+                        BusinessUserDao.insert(businessUser);
+                        jsonObject.put("code",2000);
+                        jsonObject.put("flag","success");//注册成功
+                        jsonObject.put("msg","register_success");
+                        jsonObject.put("user",businessUser);
+                    }else {
+                        jsonObject.put("code",2000);
+                        jsonObject.put("flag","fail");//注册成功
+                        jsonObject.put("msg","no verify");//未通过管理员验证，请等待
+                        jsonObject.put("user",null);
+                    }
+
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -98,6 +108,6 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        this.doGet(req, resp);
     }
 }

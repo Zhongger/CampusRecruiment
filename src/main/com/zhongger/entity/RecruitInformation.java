@@ -22,7 +22,7 @@ public class RecruitInformation implements Serializable {
     private String salary;//薪资 3k~4k
     private String deadLine;//截止日期
     private String address;//工作地点
-
+    private String applyPosition;//职位
     public Integer getId() {
         return id;
     }
@@ -80,7 +80,7 @@ public class RecruitInformation implements Serializable {
         this.companyName = companyName;
     }
 
-    public RecruitInformation(Integer id, String requirement, Integer companyId, String companyName, String salary, String deadLine, String address) {
+    public RecruitInformation(Integer id, String requirement, Integer companyId, String companyName, String salary, String deadLine, String address ,String applyPosition) {
         this.id = id;
         this.requirement = requirement;
         this.companyId = companyId;
@@ -88,6 +88,15 @@ public class RecruitInformation implements Serializable {
         this.salary = salary;
         this.deadLine = deadLine;
         this.address = address;
+        this.applyPosition = applyPosition;
+    }
+
+    public String getApplyPosition() {
+        return applyPosition;
+    }
+
+    public void setApplyPosition(String applyPosition) {
+        this.applyPosition = applyPosition;
     }
 
     public RecruitInformation() {
