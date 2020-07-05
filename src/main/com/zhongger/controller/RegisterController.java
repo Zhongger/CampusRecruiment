@@ -27,81 +27,34 @@ public class RegisterController extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String rePassword = req.getParameter("rePassword");//确认密码
-        MyMD5Util.encrypt(password);
-        String status = req.getParameter("status");//身份
+        password=MyMD5Util.encrypt(password);
         JSONObject jsonObject = new JSONObject();
-        if (!password.equals(rePassword)){//两次输入的密码不一致
-            jsonObject.put("code",2000);
-            jsonObject.put("flag","success");//登录成功
-            jsonObject.put("msg","password_unMatch");//两次输入的密码不一致
-            resp.getWriter().print(jsonObject);
-        }
-        if ("student".equals(status)){
-            String universityId = req.getParameter("universityName");
-            StudentUserVO studentUser = new StudentUserVO();
-            studentUser.setUsername(username);
 
-            studentUser.setPassword(password);
-            try {
-                String flag2 = StudentUserDao.selectUsername(studentUser);
-                if ("ok".equals(flag2)){//用户名已存在
-                    jsonObject.put("code",2000);
-                    jsonObject.put("flag","fail");//注册失败
-                    jsonObject.put("msg","usernameIsExist");//用户名已存在
-                    resp.getWriter().print(jsonObject);
-                }else {
-                    StudentUser user = new StudentUser();
-                    user.setUsername(username);
-                    user.setPassword(password);
-                    user.setUniversityId(Integer.parseInt(universityId));
-                    StudentUserDao.insert(user);
-                    jsonObject.put("code",2000);
-                    jsonObject.put("flag","success");//注册成功
-                    jsonObject.put("msg","register_success");
-                    jsonObject.put("user",user);
-                    resp.getWriter().print(jsonObject);
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+        StudentUserVO studentUser = new StudentUserVO();
+        studentUser.setUsername(username);
+        studentUser.setPassword(password);
+        try {
+            String flag2 = StudentUserDao.selectUsername(studentUser);
+            if ("ok".equals(flag2)){//用户名已存在
+                jsonObject.put("code",2000);
+                jsonObject.put("flag","fail");//注册失败
+                jsonObject.put("msg","usernameIsExist");//用户名已存在
+                resp.getWriter().print(jsonObject);
+                return;
+            }else {
+                StudentUser user = new StudentUser();
+                user.setUsername(username);
+                user.setPassword(password);
+                StudentUserDao.insert(user);
+                jsonObject.put("code",2000);
+                jsonObject.put("flag","success");//注册成功
+                jsonObject.put("msg","register_success");
+                jsonObject.put("user",user);
+                resp.getWriter().print(jsonObject);
+                return;
             }
-        }else {
-            String companyId = req.getParameter("companyId");
-            String companyName = req.getParameter("companyName");
-            BusinessUserVO businessUserVO = new BusinessUserVO();
-            businessUserVO.setUsername(username);
-            businessUserVO.setPassword(password);
-            try {
-                String flag1 = BusinessUserDao.selectUsername(businessUserVO);
-                if ("ok".equals(flag1)){//用户名已存在
-                    jsonObject.put("code",2000);
-                    jsonObject.put("flag","fail");//注册失败
-                    jsonObject.put("msg","usernameIsExist");//用户名已存在
-                    resp.getWriter().print(jsonObject);
-                }else {
-                    BusinessUser businessUser = new BusinessUser();
-                    businessUser.setUsername(username);
-                    businessUser.setPassword(password);
-                    businessUser.setCompanyId(companyId);
-                    businessUser.setCompanyId(companyId);
-                    businessUser.setCompanyName(companyName);
-                    int flag = AdminDao.passOrNot(Integer.parseInt(companyId));
-                    if (flag==1){
-                        BusinessUserDao.insert(businessUser);
-                        jsonObject.put("code",2000);
-                        jsonObject.put("flag","success");//注册成功
-                        jsonObject.put("msg","register_success");
-                        jsonObject.put("user",businessUser);
-                    }else {
-                        jsonObject.put("code",2000);
-                        jsonObject.put("flag","fail");//注册成功
-                        jsonObject.put("msg","no verify");//未通过管理员验证，请等待
-                        jsonObject.put("user",null);
-                    }
-
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
     }

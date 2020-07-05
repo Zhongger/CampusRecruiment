@@ -61,4 +61,15 @@ public class BusinessVO implements Serializable {
 
     public BusinessVO() {
     }
+
+    @Override
+    public String toString() {
+        return "BusinessVO{" +
+                "id=" + id +
+                ", companyName='" + companyName + '\'' +
+                ", companyId='" + companyId + '\'' +
+                ", password='" + password + '\'' +
+                ", companyFile='" + companyFile + '\'' +
+                '}';
+    }
 }

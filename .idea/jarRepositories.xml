@@ -27,6 +27,11 @@
       <option name="url" value="https://nexus.huya.com/repository/yypm/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="http://central/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="nexus-huya-public" />
       <option name="name" value="nexus internal huya republicleases" />
       <option name="url" value="https://nexus.huya.com/repository/maven-public/" />

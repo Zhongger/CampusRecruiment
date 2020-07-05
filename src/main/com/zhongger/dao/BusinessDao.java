@@ -21,14 +21,14 @@ public class BusinessDao {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
         connection.setAutoCommit(false);
-        String sql = "insert into verify_company (company_name,company_id,password,companyFile,is_verify) values (?,?,?,?,?)";
+        String sql = "insert into verify_company (companyName,companyId,password,companyFile,is_verify) values (?,?,?,?,?)";
         statement = connection.prepareStatement(sql);
         statement.setString(1,businessVO.getCompanyName());
         statement.setString(2,businessVO.getCompanyId());
         statement.setString(3,businessVO.getPassword());
         statement.setString(4,businessVO.getCompanyFile());
         statement.setInt(5,0);//为0的时候是指未通过验证
-        int i = statement.executeUpdate(sql);
+        int i = statement.executeUpdate();
         connection.commit();
         C3P0Pool.close(null,statement,connection);
         return i;
@@ -50,7 +50,7 @@ public class BusinessDao {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
         connection.setAutoCommit(false);
-        String sql = "select * from verify_company where company_id='"+companyId+"' and password='"+password+"' and is_verify=1";
+        String sql = "select * from verify_company where companyId='"+companyId+"' and password='"+password+"' and is_verify=1";
         statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery(sql);
         BeanHandler<BusinessVO> businessVOBeanHandler = new BeanHandler<>(BusinessVO.class);

@@ -135,7 +135,6 @@
 		input_password=$("#input_pass").val();
 		input_code=$("#input_code").val();
         console.log(input_name+":"+input_password+"--"+input_code);
-        return;
 		if(input_name==""||input_password=="")
 		{
 			alert("每一项都不能为空！");
@@ -148,7 +147,7 @@
 			return;
 		}
 		//
-		var url="/adminLogin";
+		var url="/campus/adminLogin";
 		var ajaxData={"username":input_name,"password":input_password};
 		//
 		$.ajax({
@@ -176,7 +175,7 @@
     }
     //
     function getCompany(){
-        var url="/admin/noVerifyCompany";
+        var url="/campus/admin/noVerifyCompany";
         var ajaxData={"username":username};
         //
 		$.ajax({

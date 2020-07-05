@@ -24,7 +24,7 @@ public class AdminDao {
         ResultSet resultSet = null;
         String username = admin.getUsername();
         String password = admin.getPassword();
-        String sql = "SELECT * FROM studentUser WHERE username='" + username + "' AND password='" + password + "'";
+        String sql = "SELECT * FROM admin WHERE username='" + username + "' AND password='" + password + "'";
         statement = connection.prepareStatement(sql);
         resultSet = statement.executeQuery(sql);
         BeanHandler<Admin> beanHandler = new BeanHandler<>(Admin.class);
@@ -83,18 +83,8 @@ public class AdminDao {
         ResultSet resultSet = statement.executeQuery(sql);
         BeanListHandler<BusinessVO> beanHandler = new BeanListHandler<>(BusinessVO.class);
         List<BusinessVO> businessVOList = beanHandler.handle(resultSet);
-        String sql2 = "select companyId from ref_admin_business where username ='"+username+"'";//查询出此管理员待审核的全部
-        statement = connection.prepareStatement(sql2);
-        ResultSet resultSet2 = statement.executeQuery(sql2);
-        BeanListHandler<String> beanHandler2 = new BeanListHandler<>(String.class);
-        List<String> companyIdList = beanHandler2.handle(resultSet2);
-        List<BusinessVO> res = new ArrayList<>();
-        for (String companyId : companyIdList) {
-            List<BusinessVO> collect = businessVOList.stream().filter(businessVO -> !businessVO.getCompanyId().equals(companyId)).collect(Collectors.toList());
-            res.addAll(collect);
-        }
         C3P0Pool.close(null,statement,connection);
-        return res;
+        return businessVOList;
 
     }
 }

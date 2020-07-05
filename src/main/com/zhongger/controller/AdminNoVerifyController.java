@@ -18,10 +18,13 @@ import java.util.List;
 public class AdminNoVerifyController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
         String username = req.getParameter("username");
         JSONObject jsonObject = new JSONObject();
         try {
             List<BusinessVO> res = AdminDao.findAllVerifyBusinessNo(username);
+            System.out.println(res);
             jsonObject.put("code",2000);
             jsonObject.put("msg","success");
             jsonObject.put("data",res);

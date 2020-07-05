@@ -182,7 +182,7 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		}
 		
 		//
-		var url="/register";
+		var url="register";
 		var ajaxData=null;
 		if(type=="user")
 		{
@@ -212,15 +212,13 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		}
 		else if(type=="com")
 		{
-			url="/businessRegister";
+			url="businessRegister";
 			var formData=new FormData();
 			formData.append("companyName",input_name);
 			formData.append("companyId",input_num);
 			formData.append("password",input_password1);
 			formData.append("rePassword",input_password2);
 			formData.append("companyFile",input_file);
-			//ajaxData={"username":input_name,"password":input_password1,"file":input_file};
-			//
 			$.ajax({
 				url:url,
 				type:"post",

@@ -23,11 +23,10 @@ public class StudentUserDao {
         int updateLine = 0;
         try {
             connection.setAutoCommit(false);//开启事务
-            String sql = "INSERT INTO studentUser (username,password,universityId) VALUES (?,?,?)";
+            String sql = "INSERT INTO studentUser (username,password) VALUES (?,?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, studentUser.getUsername());
             statement.setString(2, studentUser.getPassword());
-            statement.setInt(3, studentUser.getUniversityId());
             updateLine = statement.executeUpdate();
             connection.commit();//提交事务
         } catch (Exception e) {
