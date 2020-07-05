@@ -11,7 +11,8 @@
         <property name="acquireIncrement">3</property>
         <property name="initialPoolSize">10</property>
         <property name="minPoolSize">2</property>
-        <property name="maxPoolSize">10</property>
+        <property name="maxPoolSize">100</property>
+        <property name="maxIdleTime">1800</property>
     </default-config>
 
 </c3p0-config>

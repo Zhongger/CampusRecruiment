@@ -22,9 +22,9 @@ public class AdminVerifyController extends HttpServlet {
         String passOrNot = req.getParameter("passOrNot");
         JSONObject jsonObject = new JSONObject();
         try {
-            AdminDao.verifyCompanyRegister(username,companyId,passOrNot);
-            int flag = AdminDao.passOrNot(username, companyId);
-            if (flag == 1){
+            int i = AdminDao.verifyCompanyRegister(username, companyId, passOrNot);
+            //int flag = AdminDao.passOrNot(username, companyId);
+            if (i  == 1){
                 BusinessDao.registerFlag(companyId);//设置公司的信息已经验证
                 jsonObject.put("code",2000);
                 jsonObject.put("msg","verify success");

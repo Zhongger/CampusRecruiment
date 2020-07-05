@@ -102,4 +102,13 @@
         <servlet-name>BusinessLoginController</servlet-name>
         <url-pattern>/businessLogin</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>DownloadBusinessController</servlet-name>
+        <servlet-class>zhongger.controller.DownloadBusinessController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadBusinessController</servlet-name>
+        <url-pattern>/downloadBusinessFile</url-pattern>
+    </servlet-mapping>
 </web-app>

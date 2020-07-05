@@ -32,7 +32,7 @@ public class AdminDao {
         return handle;
     }
 
-    public static void verifyCompanyRegister(String username,String companyId,String passOrNot) throws SQLException {
+    public static int verifyCompanyRegister(String username,String companyId,String passOrNot) throws SQLException {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
         int flag = 0;
@@ -41,13 +41,11 @@ public class AdminDao {
         }else {
             flag = 0;
         }
-        String sql = "insert into ref_admin_business(username,companyId,flag) values (?,?,?)";
+        String sql = "update verify_company set is_verify="+flag+" where companyId='"+companyId+"'";
         statement = connection.prepareStatement(sql);
-        statement.setString(1,username);
-        statement.setString(2,companyId);
-        statement.setInt(3,flag);//1表示通过
-        statement.executeUpdate(sql);
+        int i = statement.executeUpdate();
         C3P0Pool.close(null,statement,connection);
+        return i;
     }
 
     public static int passOrNot(String username,String companyId) throws SQLException {

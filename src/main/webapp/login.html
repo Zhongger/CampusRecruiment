@@ -60,7 +60,7 @@
 				<div id="comLogin" class="container tab-pane fade">
 					<form>
 						<div>
-							企业名：<input id="com_name" class="form-control" type="text" placeholder="请输入企业名">
+							企业号：<input id="com_name" class="form-control" type="text" placeholder="请输入企业号">
 						</div>
 						<div style="margin-top: 5px;">
 							密码：<input id="com_password" class="form-control" type="password" placeholder="请输入密码">
@@ -191,7 +191,7 @@
 		}
 		else if(type=="com"){
 			//
-			var url="/businessLogin";
+			var url="/campus/businessLogin";
 			var ajaxData={"companyId":input_name,"password":input_password};
 			//
 			$.ajax({
