@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>校园招聘--首页</title>
+	<!-- 新 Bootstrap4 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+ 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+ 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<script src="static/js/functions.js"></script>
+</head>
+<body>
+	<div id="main-div">
+		<div style="text-align: center;background: rgba(255,255,255,0.5);padding:20px;">
+			<h1 style="color: #80FFFF;">管理与审核</h1>
+        </div>
+        <div id="show-com-div">
+            <div style="text-align: center;"><h4>企业用户注册审核:<span id="comNum"></span></h4></div>
+            <hr style="margin-top: 5px;margin-bottom: 5px;">
+
+            <!-- <div id='id' class='com-div'>
+                <div class='com-item'>公司名称</div>
+                <div class='com-item'><a href='#'>点击下载企业凭证</a></div>
+                <div class='com-item'>
+                    <button onclick='verify(1,comId,divId)' type='button' class='btn btn-success btn-sm'>通过</button>
+                    <button onclick='verify(0,comId,divId)' type='button' class='btn btn-danger btn-sm'>不通过</button>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div id="login-div">
+        <div id="login">
+            <div style="text-align: center;"><h5>登陆</h5></div>
+            <div>账号：</div>
+            <input id="input_name" type="text" class="form-control" placeholder="请输入账号">
+            <div style="margin-top: 5px;">密码：</div>
+            <input id="input_pass" type="password" class="form-control" placeholder="请输入密码">
+            <div style="margin-top: 5px;">
+                <canvas id="codecanvas" width="70" height="40" onclick="fleshCode()"></canvas>
+                <input  id="input_code" class="form-control" style="width: 80px;" type="text" placeholder="验证码">
+            </div>
+            <div style="margin-top: 20px;">
+                <button onclick="login()" type="button" class="btn btn-success">登陆</button>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    #codecanvas{
+		margin-left: 2px;
+		border-radius: 2px;
+		background: rgb(240,240,240);
+	}
+	#codecanvas:hover{
+		cursor: pointer;
+	}
+    #login-div{
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        position: fixed;
+        margin:auto;
+        top: 0;
+        left: 0;
+        right:  0;
+        bottom: 0;
+    }
+    #login{
+        width: 300px;
+        height: 330px;
+        padding: 10px;
+        border-radius: 5px;
+        background: rgba(255,255,255,0.8);
+        position: fixed;
+        margin:auto;
+        top: 0;
+        left: 0;
+        right:  0;
+        bottom: 0;
+    }
+    body{
+        background-image:url("static/images/bg.jpg");
+        background-size: 100% auto;
+        background-repeat:no-repeat;
+        background-attachment: fixed;
+    }
+    #show-com-div{
+        width:30%;
+        margin-left: 35%;
+        margin-top: 20px;
+        padding: 10px;
+    }
+    .com-div{
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 5px;
+        background: rgba(255,255,255,0.5);
+    }
+    .com-item{
+        margin-top: 5px;
+    }
+    #main-div{
+        display: none;
+    }
+</style>
+<script>
+    var username=null;
+    var verCode=null;//验证码
+    var dataLen=0;//企业个数
+    $(document).ready(function(){
+        //$("#main-div").css("display","inline");
+        //$("#login-div").css("display","none");
+		verCode=makeCode("codecanvas");
+	});
+    //更新验证码
+	function fleshCode(){
+		verCode=makeCode("codecanvas");
+		console.log(verCode);	
+	}
+    //登陆
+	function login(){
+		console.log("点击了登陆");
+		//
+		var input_name=null;
+		var input_password=null;
+		var input_code=null;
+
+		input_name=$("#input_name").val();
+		input_password=$("#input_pass").val();
+		input_code=$("#input_code").val();
+        console.log(input_name+":"+input_password+"--"+input_code);
+        return;
+		if(input_name==""||input_password=="")
+		{
+			alert("每一项都不能为空！");
+			return;
+		}
+		else if(input_code!=verCode){
+			alert("验证码错误");
+			fleshCode();
+			$("#input_code").val("");
+			return;
+		}
+		//
+		var url="/campus/adminLogin";
+		var ajaxData={"username":input_name,"password":input_password};
+		//
+		$.ajax({
+			url:url,
+			type:"post",
+			data:ajaxData,
+			//contentType:"application/json;charset=UTF-8",
+			dataType:"json",
+			success:function(res)
+			{
+                console.log(res);
+                if(res.flag=="success"){
+                    username=res.admin;
+                    $("#login-div").css("display","none");
+                    $("#main-div").css("display","inline");
+                    getCompany();
+                }
+			},
+			error:function(res)
+			{
+				alert("连接服务器失败！");
+				console.log(res);
+			}
+		});
+    }
+    //
+    function getCompany(){
+        var url="/campus/admin/noVerifyCompany";
+        var ajaxData={"username":username};
+        //
+		$.ajax({
+			url:url,
+			type:"post",
+			data:ajaxData,
+			//contentType:"application/json;charset=UTF-8",
+			dataType:"json",
+			success:function(res)
+			{
+                console.log(res);
+                if(res.flag=="success"){
+                    dataLen=res.data.length;
+                   showCompany(res.data);
+                }
+			},
+			error:function(res)
+			{
+				alert("连接服务器失败！");
+				console.log(res);
+			}
+		});
+    }
+    //
+    function showCompany(data){
+        var len=data.length;
+        $("#comNum").html(len);
+        for(var i=0;i<len;i++){
+            var temp=data[i];
+            var str="<div id='"+i+"' class='com-div'>"
+                    +"<div class='com-item'>"+temp.companyName+"</div>"
+                    +"<div class='com-item'><a href='"+temp.verifyFile+"'>点击下载企业凭证</a></div>"
+                    +"<div class='com-item'>"
+                        +"<button onclick='verify(1,"+temp.companyId+","+i+")' type='button' class='btn btn-success btn-sm'>通过</button>"
+                        +"<button onclick='verify(0,"+temp.companyId+","+i+")' type='button' class='btn btn-danger btn-sm'>不通过</button>"
+                        +"</div>"
+                    +"</div>";
+            $("#show-com-div").append(str);
+        }
+    }
+    //
+    function verify(action,comId,divId){
+        //
+        if((action==1||action==0)&&comId!=null){
+            var pass=null;
+            if(action==1)
+                pass="yes";
+            else
+                pass="no";
+
+            var url="/campus/admin/verify";
+            var ajaxData={"username":username,"companyId":comId,"passOrNot":pass};
+            //
+            $.ajax({
+                url:url,
+                type:"post",
+                data:ajaxData,
+                dataType:"JSON",
+                success:function(res){
+                    console.log(res);
+                    if(res.msg=="verify success"){
+                        alert("操作成功！");
+                        dataLen--;
+                        $("#comNum").html(dataLen);
+                        $("#"+divId).css("display","none");
+                    }
+                    else{
+                        alert("操作失败,Error:\n"+res.msg);
+                    }
+                },
+                error:function(res){
+                    alert("连接服务器失败！")
+                    console.log(res);
+                }
+            });
+        }
+    }
+</script>
+</html>
