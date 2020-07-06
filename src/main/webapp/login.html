@@ -208,8 +208,10 @@
 						storage.setItem("type",type);
 						storage.setItem("username",res.data.companyName);
 						window.history.back(1);
+					}else {
+						alert("企业用户不存在或未通过审核")
 					}
-					else{
+					/*else{
 						if(res.msg=="passwordError"){
 							//$("#login-result").html("登陆失败，密码错误！");
 							$("#login-result2").html("登陆失败，密码错误！");
@@ -222,7 +224,7 @@
 							//$("#login-result").html("登陆失败，用户名或密码为空！");
 							$("#login-result2").html("登陆失败，用户名或密码为空！");
 						}
-					}
+					}*/
 				},
 				error:function(res)
 				{
