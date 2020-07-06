@@ -133,15 +133,11 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		//
 		if(user==null||user.type==null||user.type==undefined||user.type=="user")
 			$("#submit").css("display","inline");
-		else if(user.type=="com"){
-			$("#recResume").css("display","inline");
-			getRecResume();
-		}
+		// else if(user.type=="com"){
+		// 	$("#recResume").css("display","block");
+		// 	getRecResume();
+		// }
 		console.log(msgId);
-		//
-		// var aa=[{"studentName":"谭积锋","applyPosition":"java开发",
-		// 		"phoneNume":"1111111","email":"124@qq.com","resumeFile":"111"}];
-		// showResume(aa);
 	});
 	//获取本招聘详情
 	function getMsg(){
@@ -160,7 +156,7 @@ background-repeat:no-repeat;background-attachment: fixed;">
 						msg=res.data;
 						showDetail(res.data);
 						if(user.type=="com"&&res.data.companyName==user.username){
-							$("#recResume").css("display","inline");
+							$("#recResume").css("display","block");
 							getRecResume();
 						}
 					}
@@ -201,10 +197,12 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		});
 	}
 	//显示收到的简历
-	function showResume(data){
+	function showResume(data)
+	{
 		var len=data.length;
 		$("#resumeNum").html(len);
-		for(var i=0;i<len;i++){
+		for(var i=0;i<len;i++)
+		{
 			var temp=data[i];
 			var str="<div class='resume'>"
 					+"<div style='font-size: 18px;color:chocolate;'>"+temp.studentName+"</div>"
