@@ -7,15 +7,6 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-
- <!--   <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>zhongger.Filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/user/*</url-pattern>
-    </filter-mapping>-->
     <servlet>
         <!-- 声明Servlet对象 -->
         <servlet-name>LoginController</servlet-name>
