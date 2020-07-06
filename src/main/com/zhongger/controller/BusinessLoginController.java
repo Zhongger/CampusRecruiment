@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -20,7 +21,9 @@ public class BusinessLoginController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String companyId = req.getParameter("companyId");
         String password = req.getParameter("password");
+        resp.setCharacterEncoding("UTF-8");
         String password2 = MyMD5Util.encrypt(password);
+        HttpSession session = req.getSession();
         BusinessVO businessVO = null;
         try {
             businessVO = BusinessDao.login(companyId, password2);
@@ -29,6 +32,7 @@ public class BusinessLoginController extends HttpServlet {
                 jsonObject.put("code",2000);
                 jsonObject.put("msg","login success");
                 jsonObject.put("data",businessVO);
+                session.setAttribute("businessUser",businessVO);
                 resp.getWriter().print(jsonObject);
                 return;
             }else {

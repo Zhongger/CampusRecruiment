@@ -29,7 +29,6 @@ function checkLogin()
 function seeMsg(msg_id,src)
 {
 	console.log(src+":点击了查看招聘详情");
-	msg_id="123";
 	if(src==1)
 		location.href="pages/seeMsg.html?id="+msg_id;
 	else

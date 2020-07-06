@@ -22,8 +22,8 @@ $(document).ready(function(){
 		$("#register").css("display","inline");
 	}
 	//
-	var data=[{"companyName":"虎牙","id":123,"salary":"5k/month","deadLine":"2020-07-23","applyPosition":"java后台开发"}];
-	showMsg(data);
+	/*var data=[{"companyName":"虎牙","id":123,"salary":"5k/month","deadLine":"2020-07-23","applyPosition":"java后台开发"}];
+	showMsg(data);*/
 });
 
 //搜索按钮

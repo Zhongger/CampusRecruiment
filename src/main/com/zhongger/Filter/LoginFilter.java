@@ -25,14 +25,8 @@ public class LoginFilter implements Filter {
         HttpSession session = request.getSession();
         Object studentUserSession = session.getAttribute("studentUser");
         Object businessUserSession = session.getAttribute("businessUser");
-        if (studentUserSession==null){
-            jsonObject.put("code",2000);
-            jsonObject.put("msg","Please Login");
-            jsonObject.put("flag","fail");
-            response.getWriter().print(jsonObject);
-            return;
-        }
-        if (businessUserSession==null){
+        System.out.println(businessUserSession);
+        if (studentUserSession==null&&businessUserSession==null){
             jsonObject.put("code",2000);
             jsonObject.put("msg","Please Login");
             jsonObject.put("flag","fail");

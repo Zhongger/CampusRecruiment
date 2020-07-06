@@ -2,12 +2,15 @@ package zhongger.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import zhongger.dao.RecruitInformationDao;
+import zhongger.entity.BusinessUser;
+import zhongger.entity.BusinessVO;
 import zhongger.entity.RecruitInformation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,17 +26,20 @@ public class RecruitInformationController extends HttpServlet {
         String operate = req.getParameter("operate");
         JSONObject jsonObject = new JSONObject();
         resp.setCharacterEncoding("UTF-8");
+        System.out.println(operate);
         if (operate.equals("add")){
             String requirement = req.getParameter("requirement");
-            String companyId = req.getParameter("companyId");
-            String companyName = req.getParameter("companyName");
+            HttpSession session = req.getSession();
+            BusinessVO businessVO = (BusinessVO) session.getAttribute("businessUser");
+            String companyId = businessVO.getCompanyId();
+            String companyName = businessVO.getCompanyName();
             String salary = req.getParameter("salary");
             String deadLine = req.getParameter("deadLine");
             String address = req.getParameter("address");
             String applyPosition = req.getParameter("applyPosition");
             RecruitInformation recruitInformation = new RecruitInformation();
             recruitInformation.setRequirement(requirement);
-            recruitInformation.setCompanyId(Integer.parseInt(companyId));
+            recruitInformation.setCompanyId(companyId);
             recruitInformation.setCompanyName(companyName);
             recruitInformation.setSalary(salary);
             recruitInformation.setDeadLine(deadLine);
@@ -60,14 +66,15 @@ public class RecruitInformationController extends HttpServlet {
         }else if (operate.equals("update")){
             String id = req.getParameter("id");
             String requirement = req.getParameter("requirement");
-            String companyId = req.getParameter("companyId");
-            String companyName = req.getParameter("companyName");
+            HttpSession session = req.getSession();
+            BusinessVO businessVO = (BusinessVO) session.getAttribute("businessUser");
+            String companyId = businessVO.getCompanyId();
+            String companyName = businessVO.getCompanyName();
             String salary = req.getParameter("salary");
             String deadLine = req.getParameter("deadLine");
             String address = req.getParameter("address");
             String applyPosition = req.getParameter("applyPosition");
-            RecruitInformation recruitInformation = new RecruitInformation(Integer.parseInt(id),requirement,Integer.parseInt(companyId),companyName,salary,deadLine,address,applyPosition);
-            System.out.println(recruitInformation);
+            RecruitInformation recruitInformation = new RecruitInformation(Integer.parseInt(id),requirement,companyId,companyName,salary,deadLine,address,applyPosition);
             try {
                 int update = RecruitInformationDao.update(recruitInformation);
                 if (update>0){

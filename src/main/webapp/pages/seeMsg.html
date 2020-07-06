@@ -7,51 +7,51 @@
 	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
- 	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+	<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
 	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
- 	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	
+
 	<script src="../static/js/functions.js"></script>
 	<link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body style="background-image:linear-gradient(to bottom right,rgb(0,220,220),#FFFFF0);
 background-repeat:no-repeat;background-attachment: fixed;">
-	<div style="padding-bottom: 20px;">
-		<div id="title" style="height: 130px;">
-			<h2 style="color: #80FFFF;padding-top: 30px;">
-				<a href="../index.html" style="color: #80FFFF;">校园招聘</a>
-				--招聘详情
-			</h2>
+<div style="padding-bottom: 20px;">
+	<div id="title" style="height: 130px;">
+		<h2 style="color: #80FFFF;padding-top: 30px;">
+			<a href="../index.html" style="color: #80FFFF;">校园招聘</a>
+			--招聘详情
+		</h2>
+	</div>
+	<div id="content-div">
+		<div id="comName">
+			公司名
 		</div>
-		<div id="content-div">
-			<div id="comName">
-				公司名
-			</div>
-			<div class="item_div">
-				截止时间：<span id="endTime"></span>
-			</div>
-			<div class="item_div">
-				招聘职位：<span id="position"></span>
-			</div>
-			<div class="item_div">
-				要求：<span id="require"></span>
-			</div>
-			<div class="item_div">
-				薪酬：<span id="pay"></span>
-			</div>
-			<div class="item_div">
-				工作地点：<span id="location"></span>
-			</div>
+		<div class="item_div">
+			截止时间：<span id="endTime"></span>
 		</div>
-		<div style="text-align: center;padding-top: 30px;">
-			<button id="submit" class="submit_btn" onclick="gotoSubmit()">应聘</button>
+		<div class="item_div">
+			招聘职位：<span id="position"></span>
 		</div>
-		<div id="recResume">
-			<div style="text-align: center;"><h5>收到的简历:<span id="resumeNum">0</span><h5></div>
-			<hr>
+		<div class="item_div">
+			要求：<span id="require"></span>
+		</div>
+		<div class="item_div">
+			薪酬：<span id="pay"></span>
+		</div>
+		<div class="item_div">
+			工作地点：<span id="location"></span>
 		</div>
 	</div>
+	<div style="text-align: center;padding-top: 30px;">
+		<button id="submit" class="submit_btn" onclick="gotoSubmit()">应聘</button>
+	</div>
+	<div id="recResume">
+		<div style="text-align: center;"><h5>收到的简历:<span id="resumeNum">0</span><h5></div>
+		<hr>
+	</div>
+</div>
 </body>
 <style>
 	.resume{
@@ -69,7 +69,7 @@ background-repeat:no-repeat;background-attachment: fixed;">
 	}
 	.submit_btn{
 		display: none;
-		border: none; 
+		border: none;
 		width: 80px;
 		height: 80px;
 		border-radius: 40px;
@@ -133,22 +133,17 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		//
 		if(user==null||user.type==null||user.type==undefined||user.type=="user")
 			$("#submit").css("display","inline");
-		
-		//
-		// var aa=[{"studentName":"谭积锋","applyPosition":"java开发",
-		// 		"phoneNume":"1111111","email":"124@qq.com","resumeFile":"111"}];
-		// showResume(aa);
+		console.log(msgId);
 	});
 	//获取本招聘详情
 	function getMsg(){
 		if(msgId!=null&&msgId!=undefined&&msgId!=""){
-			var url="user/recruitInfo";
+			var url="/campus/user/recruitInfo";
 			var ajaxData={"operate":"showDetail","id":msgId};
 			$.ajax({
 				url:url,
 				type:"post",
 				data:ajaxData,
-				//contentType:"application/json;charset=UTF-8",
 				dataType:"JSON",
 				success:function(res){
 					console.log(res);
@@ -156,13 +151,12 @@ background-repeat:no-repeat;background-attachment: fixed;">
 						msg=res.data;
 						showDetail(res.data);
 						if(user.type=="com"&&res.data.companyName==user.username){
-							$("#recResume").css("display","inline");
+							$("#recResume").css("display","block");
 							getRecResume();
 						}
 					}
 				},
 				error:function(res){
-					//alert("连接服务器失败！");
 					console.log(res);
 				}
 			});
@@ -179,7 +173,7 @@ background-repeat:no-repeat;background-attachment: fixed;">
 	}
 	//查看收到的简历
 	function getRecResume(){
-		var url="/user/resume";
+		var url="/campus/user/resume";
 		var ajaxData={"operate":"findByRecruitInfoId","recuitInfoId":msgId};
 		$.ajax({
 			url:url,
@@ -197,17 +191,20 @@ background-repeat:no-repeat;background-attachment: fixed;">
 		});
 	}
 	//显示收到的简历
-	function showResume(data){
+	function showResume(data)
+	{
 		var len=data.length;
 		$("#resumeNum").html(len);
-		for(var i=0;i<len;i++){
+		for(var i=0;i<len;i++)
+		{
 			var temp=data[i];
+			console.log(temp.attachmentResume)
 			var str="<div class='resume'>"
 					+"<div style='font-size: 18px;color:chocolate;'>"+temp.studentName+"</div>"
 					+"<div>应聘职位：<span style='color: dodgerblue;'>"+temp.applyPosition+"</span></div>"
-					+"<div>手机号码：<span style='color: dodgerblue;'>"+temp.phoneNume+"</span></div>"
+					+"<div>手机号码：<span style='color: dodgerblue;'>"+temp.phoneNum+"</span></div>"
 					+"<div>联系邮箱：<span style='color: dodgerblue;'>"+temp.email+"</span></div>"
-					+"<div><a href='"+temp.resumeFile+"'>点击下载简历</a></div>"
+					+"<div><a href='/campus/downloadResumeFile?fileName="+temp.attachmentResume+"'>点击下载简历</a></div>"
 					+"</div>";
 			$("#recResume").append(str);
 		}
@@ -225,3 +222,4 @@ background-repeat:no-repeat;background-attachment: fixed;">
 	}
 </script>
 </html>
+

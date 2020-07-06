@@ -75,15 +75,14 @@ background-repeat:no-repeat;background-attachment: fixed;">
 			return;
 		}
 		//
-		var url="/user/resume";
+		var url="/campus/user/submitResume";
 		//var ajaxData={"operate":"add","studentName":name,"studentUsername":user.username,"recruitInfoId":msgId,};
 		var formData=new FormData();
-		formData.append("operate","add");
 		formData.append("studentName",name);
 		formData.append("studentUsername",user.username);
 		formData.append("recruitInfoId",msgId);
 		formData.append("applyPosition",position);
-		formData.append("phoneNume",phone);
+		formData.append("phoneNum",phone);
 		formData.append("email",email);
 		formData.append("resumeFile",resumeFile);
 		$.ajax({

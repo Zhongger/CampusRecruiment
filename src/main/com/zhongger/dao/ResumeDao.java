@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,8 +74,11 @@ public class ResumeDao {
         String sql = "select recruitInfoId from resume where studentUsername='"+studentUsername+"'";
         statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery(sql);
-        BeanListHandler<Integer> beanHandler = new BeanListHandler<>(Integer.class);
-        List<Integer> res = beanHandler.handle(resultSet);
+        ArrayList<Integer> res = new ArrayList<>();
+        while (resultSet.next()){
+            int i = resultSet.getInt(1);
+            res.add(i);
+        }
         return res;
     }
 }

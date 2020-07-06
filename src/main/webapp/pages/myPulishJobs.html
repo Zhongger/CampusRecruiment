@@ -54,9 +54,7 @@
 <script>
     var user=null;
     $(document).ready(function(){
-        // var data=[{"companyName":"虎牙","id":123,"salary":"5k/month","deadLine":"2020-07-23","applyPosition":"java后台开发"}];
-        // showPublishJob(data);
-        // return;
+
         user=checkLogin();
         if(user!=null&&user.type=="com"){
             getMyPublishJobs();
@@ -68,7 +66,7 @@
 
     });
     function getMyPublishJobs(){
-        var url="/user/recruitInfo";
+        var url="/campus/user/recruitInfo";
         var ajaxData={"operate":"condition","condition":user.username};
         //
         $.ajax({

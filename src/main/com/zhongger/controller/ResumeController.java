@@ -45,23 +45,6 @@ public class ResumeController extends HttpServlet {
             String applyPosition = req.getParameter("applyPosition");
             String phoneNum = req.getParameter("phoneNum");
             String email = req.getParameter("email");
-            /*Part part = req.getPart("resumeFile");
-            String disposition = part.getHeader("Content-Disposition");
-            String suffix = disposition.substring(disposition.lastIndexOf("."),disposition.length()-1);
-            //随机的生存一个32的字符串
-            String filename = UUID.randomUUID()+suffix;
-            //获取上传的文件名
-            InputStream is = part.getInputStream();
-            //动态获取服务器的路径
-            String serverpath = req.getServletContext().getRealPath("upload");
-            FileOutputStream fos = new FileOutputStream(serverpath+"/"+filename);
-            byte[] bty = new byte[1024];
-            int length =0;
-            while((length=is.read(bty))!=-1){
-                fos.write(bty,0,length);
-            }
-            fos.close();
-            is.close();*/
             String attachmentResume = "文件名";
 
             Resume resume = new Resume(studentUsername, Integer.parseInt(recruitInfoId), studentName, applyPosition, phoneNum, email, attachmentResume);
@@ -103,7 +86,8 @@ public class ResumeController extends HttpServlet {
             }
             out.close();
         }else if (operate.equals("findByRecruitInfoId")){
-            String recruitInfoId = req.getParameter("recruitInfoId");
+            String recruitInfoId = req.getParameter("recuitInfoId");
+            System.out.println(recruitInfoId);
             List<Resume> byRecruitInfoID = ResumeDao.findByRecruitInfoID(Integer.parseInt(recruitInfoId));
             jsonObject.put("code",2000);
             jsonObject.put("msg","success");

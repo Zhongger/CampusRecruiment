@@ -207,7 +207,7 @@
             var temp=data[i];
             var str="<div id='"+i+"' class='com-div'>"
                     +"<div class='com-item'>"+temp.companyName+"</div>"
-                    +"<div class='com-item'><a href='"+temp.companyFile+"'>点击下载企业凭证</a></div>"
+                    +"<div class='com-item'><a href='/campus/downloadBusinessFile?fileName="+temp.companyFile+"'>点击下载企业凭证</a></div>"
                     +"<div class='com-item'>"
                         +"<button onclick='verify(1,"+temp.companyId+","+i+")' type='button' class='btn btn-success btn-sm'>通过</button>"
                         +"<button onclick='verify(0,"+temp.companyId+","+i+")' type='button' class='btn btn-danger btn-sm'>不通过</button>"

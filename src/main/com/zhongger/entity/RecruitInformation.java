@@ -17,7 +17,7 @@ import java.util.Date;
 public class RecruitInformation implements Serializable {
     private Integer id;//id
     private String requirement;//招聘要求
-    private Integer companyId;//公司id
+    private String companyId;//公司id
     private String companyName;//公司名称
     private String salary;//薪资 3k~4k
     private String deadLine;//截止日期
@@ -40,11 +40,11 @@ public class RecruitInformation implements Serializable {
         this.requirement = requirement;
     }
 
-    public Integer getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
@@ -80,7 +80,7 @@ public class RecruitInformation implements Serializable {
         this.companyName = companyName;
     }
 
-    public RecruitInformation(Integer id, String requirement, Integer companyId, String companyName, String salary, String deadLine, String address ,String applyPosition) {
+    public RecruitInformation(Integer id, String requirement, String companyId, String companyName, String salary, String deadLine, String address ,String applyPosition) {
         this.id = id;
         this.requirement = requirement;
         this.companyId = companyId;

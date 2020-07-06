@@ -24,7 +24,7 @@ public class RecruitInformationDao {
             String sql = "INSERT INTO recruitInformation (requirement,companyId,companyName,salary,deadLine,address,version,applyPosition) VALUES (?,?,?,?,?,?,?,?)" ;
             statement = connection.prepareStatement(sql);
             statement.setString(1,recruitInformation.getRequirement());
-            statement.setInt(2,recruitInformation.getCompanyId());
+            statement.setString(2,recruitInformation.getCompanyId());
             statement.setString(3,recruitInformation.getCompanyName());
             statement.setString(4, recruitInformation.getSalary());
             statement.setString(5, recruitInformation.getDeadLine());
@@ -82,7 +82,7 @@ public class RecruitInformationDao {
         PreparedStatement statement = null;
         String sql = "SELECT * FROM recruitInformation WHERE id="+id;
         statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
+        ResultSet resultSet = statement.executeQuery(sql);
         BeanHandler<RecruitInformation> beanHandler =new BeanHandler<>(RecruitInformation.class);
         RecruitInformation result = beanHandler.handle(resultSet);
         C3P0Pool.close(resultSet,statement,connection);
@@ -114,7 +114,7 @@ public class RecruitInformationDao {
             String sql = "UPDATE recruitInformation SET requirement=?,companyId=?,companyName=?,salary=?,deadLine=?,address=?,applyPosition=? where id=?";
             statement = connection.prepareStatement(sql);
             statement.setString(1,recruitInformation.getRequirement());
-            statement.setInt(2,recruitInformation.getCompanyId());
+            statement.setString(2,recruitInformation.getCompanyId());
             statement.setString(3,recruitInformation.getCompanyName());
             statement.setString(4,recruitInformation.getSalary());
             statement.setString(5,recruitInformation.getDeadLine());
