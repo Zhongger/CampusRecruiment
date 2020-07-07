@@ -39,7 +39,7 @@ public class AdminDao {
         if (passOrNot.equals("yes")){
             flag = 1;
         }else {
-            flag = 0;
+            flag = -1;
         }
         String sql = "update verify_company set is_verify="+flag+" where companyId='"+companyId+"'";
         statement = connection.prepareStatement(sql);

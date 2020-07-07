@@ -34,11 +34,17 @@ public class BusinessDao {
         return i;
     }
     //修改验证
-    public static int registerFlag(String companyId) throws SQLException {
+    public static int registerFlag(String companyId,String passOrNot) throws SQLException {
         Connection connection = C3P0Pool.getConnection();
         PreparedStatement statement = null;
         connection.setAutoCommit(false);
-        String sql = "update verify_company set is_verify=1 where companyId='"+companyId+"'";
+        int flag = 0;
+        if (passOrNot.equals("yes")){
+            flag = 1;
+        }else {
+            flag = -1;
+        }
+        String sql = "update verify_company set is_verify="+flag+" where companyId='"+companyId+"'";
         statement = connection.prepareStatement(sql);
         int i = statement.executeUpdate(sql);
         connection.commit();

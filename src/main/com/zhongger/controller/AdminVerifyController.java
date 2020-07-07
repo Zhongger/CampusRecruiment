@@ -25,7 +25,7 @@ public class AdminVerifyController extends HttpServlet {
             int i = AdminDao.verifyCompanyRegister(username, companyId, passOrNot);
             //int flag = AdminDao.passOrNot(username, companyId);
             if (i  == 1){
-                BusinessDao.registerFlag(companyId);//设置公司的信息已经验证
+                BusinessDao.registerFlag(companyId,passOrNot);//设置公司的信息已经验证
                 jsonObject.put("code",2000);
                 jsonObject.put("msg","verify success");
                 resp.getWriter().print(jsonObject);
